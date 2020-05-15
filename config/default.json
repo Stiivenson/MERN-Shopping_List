@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb://localhost/MERN_ShoppingList",
+    "jwtSecret": "sl_SecretJWTCode"
+}
