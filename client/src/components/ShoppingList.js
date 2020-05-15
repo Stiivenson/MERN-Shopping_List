@@ -8,6 +8,11 @@ import { connect } from 'react-redux';
 import { getItems, deleteItem } from '../actions/itemAction';
 
 class ShoppingList extends Component{
+    static propTypes = {
+        getItems: PropTypes.func.isRequired,
+        item: PropTypes.object.isRequired,
+        isAuthenticated: PropTypes.bool
+    }
 
     componentDidMount() {
         this.props.getItems();
@@ -23,21 +28,28 @@ class ShoppingList extends Component{
             <Container>                
                 <ListGroup>
                     <TransitionGroup className='shopping-list'>
-                        {items.map(({_id,name}) => (
-                            <CSSTransition key={_id} timeout={500} classNames='fade'>
-                                <ListGroupItem>
-                                    <Button
-                                        className='remove-btn'
-                                        color='danger'
-                                        size='sm'
-                                        onClick={this.onDeleteClick.bind(this, _id)}
-                                    >
-                                        &times;
-                                    </Button>
-                                    {name}
-                                </ListGroupItem>
-                            </CSSTransition>
-                        ))}
+                        { this.props.isAuthenticated ?
+
+                            items.map(({_id,name}) => (
+                                <CSSTransition key={_id} timeout={500} classNames='fade'>
+                                    <ListGroupItem>
+                                        <Button
+                                            className='remove-btn'
+                                            color='danger'
+                                            size='sm'
+                                            onClick={this.onDeleteClick.bind(this, _id)}
+                                        >
+                                            &times;
+                                        </Button>
+                                        {name}
+                                    </ListGroupItem>
+                                </CSSTransition>
+                            ))
+
+                            :
+
+                            null                        
+                        }                        
                     </TransitionGroup>
                 </ListGroup>
             </Container>
@@ -45,13 +57,9 @@ class ShoppingList extends Component{
     }
 }
 
-ShoppingList.propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired
-}
-
 const mapStateToProps = (state) => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList);
