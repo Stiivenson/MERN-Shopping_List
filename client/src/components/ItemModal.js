@@ -4,8 +4,6 @@ import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } 
 import { connect } from 'react-redux';
 import { addItem } from '../actions/itemAction';
 
-import { v1 as uuidv1 } from 'uuid';
-
 class ItemModal extends Component{
     state = {
         modal: false,
@@ -26,7 +24,6 @@ class ItemModal extends Component{
         e.preventDefault();
         
         const newItem = {
-            id: uuidv1(),
             name: this.state.name
         }
         this.props.addItem(newItem);
